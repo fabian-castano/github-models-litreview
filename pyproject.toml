@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "github-models-litreview"
+version = "0.1.0"
+description = ""
+authors = ["fabiancastano <fabian.castano@frubana.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+python-dotenv = "^1.0.1"
+azure-ai-inference = "^1.0.0b4"
+jupyter = "^1.1.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
