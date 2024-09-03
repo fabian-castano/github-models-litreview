@@ -12,9 +12,6 @@ class AzureInferenceClient:
             credential=AzureKeyCredential(os.getenv("AZURE_KEY"))
         )
         print("AzureInferenceClient initialized")
-        print(os.getenv("AZURE_ENDPOINT"))
-        print(os.getenv("AZURE_KEY"))
-
         self.message_chain = []
 
 
