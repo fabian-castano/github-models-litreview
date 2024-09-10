@@ -48,6 +48,58 @@ class AzureInferenceClient:
         else:
             self.message_chain.append(AssistantMessage(content=response))
 
+class LiteratureReviewClient:
+    def __init__(self,
+                 model="Mistral-large-2407",
+                    temperature=0.7,
+                    max_tokens=4096,
+                    top_p=1
+                 ):
+        self.client = ChatCompletionsClient(
+            endpoint=os.getenv("AZURE_ENDPOINT"),
+            credential=AzureKeyCredential(os.getenv("AZURE_KEY"))
+        )
+        print("AzureInferenceClient initialized")
+        self.message_chain = []
+        self.model = model
+        self.temperature = temperature
+        self.max_tokens = max_tokens
+        self.top_p = top_p
+
+        self.parts = {}
+
+
+    def complete(self, messages):
+        response = self.client.complete(
+            messages=messages,
+            model=self.model,
+            temperature=self.temperature,
+            max_tokens=self.max_tokens,
+            top_p=self.top_p
+        )
+        self.message_chain.append(response.choices[0].message)
+        return response.choices[0].message.content
+
+
+    def append_user_message(self, message):
+        if not isinstance(message, str):
+            self.message_chain.append(message)
+        else:
+            self.message_chain.append(UserMessage(content=message))
+
+    def append_response(self, response):
+        if not isinstance(response, str):
+            self.message_chain.append(response)
+        else:
+            self.message_chain.append(AssistantMessage(content=response))
+
+    def get_title(self, message):
+        # find the word "Title" in the message and return the following text
+        self.parts["title"] = message.split("Title")[1].strip()
+
+    def get_sections(self, message):
+        # find the word "Sections" in the message and return the following text
+        self.parts["sections"] = message.split("*")[1].strip()
 
 
 
